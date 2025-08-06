@@ -64,3 +64,99 @@ export async function getDbUserId() {
 
   return user.id
 }
+
+export async function getRandowUsers() {
+  try {
+    const userId = await getDbUserId()
+
+    //get 3 random user exclude ourselve & users that we already follow
+    const randomUsers = await prisma.user.findMany({
+      where: {
+        AND: [
+          {NOT: {id: userId}},
+          {
+            NOT: {
+              followers: {
+                some: {
+                  followerId: userId
+                }
+              }
+            }
+          }
+        ]
+      },
+      select: {
+        id: true,
+        name: true,
+        username: true,
+        image: true,
+        _count: {
+          select: {
+            followers: true
+          }
+        }
+      },
+      take : 3
+    })
+
+    return randomUsers
+  }
+  catch (err) {
+    console.log("Error to fetching random users ", err)
+    return []
+  }
+}
+
+export async function toggleFollow(targetUserId: string) {
+  try {
+    const userId = await getDbUserId()
+
+    if (userId === targetUserId) throw new Error("You can't follow yourself")
+
+    const existingFollow = await prisma.follows.findUnique({
+      where: {
+        followerId_followingId : {
+          followerId: userId,
+          followingId: targetUserId
+        }
+      }
+    })
+
+    if (existingFollow) {
+      //unfollow
+      await prisma.follows.delete({
+        where: {
+          followerId_followingId: {
+            followerId: existingFollow.followerId,
+            followingId: existingFollow.followingId
+          }
+        }
+      })
+    } else {
+      //follow
+      //dung $transaction neu muon cung 1 luc cho 2 bang
+      await prisma.$transaction([
+        prisma.follows.create({
+          data: {
+            followerId: userId,
+            followingId: targetUserId
+          }
+        }),
+
+        prisma.notification.create({
+          data: {
+            type: "FOLLOW",
+            userId: targetUserId,
+            creatorId: userId
+          }
+        })
+      ])
+    }
+
+    return {success:true}
+  }
+  catch (err) {
+    console.log("Fail to follow this user", err)
+    return {success:false, err: "Error toggling follow"}
+  }
+}
