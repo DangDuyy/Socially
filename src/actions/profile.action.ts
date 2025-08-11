@@ -3,6 +3,7 @@
 import prisma from "@/lib/prisma"
 import { auth } from "@clerk/nextjs/server"
 import { revalidatePath } from "next/cache"
+import { getDbUserId } from "./user.action"
 
 export async function getProfileByUsername(username: string) {
   try {
@@ -152,7 +153,7 @@ export async function getUserLikePosts(userId: string) {
   }
 }
 
-export async function updateProfiles(formData: FormData) {
+export async function updateProfile(formData: FormData) {
   try {
     const { userId: clerkId } = await auth()
     //destructure de lay userId va doi ten thanh clerkId
@@ -179,4 +180,26 @@ export async function updateProfiles(formData: FormData) {
     console.log('Failed to update user profile')
     throw new Error(error)
   }
+}
+
+// means: minh bam vao profile cua nguoi khac
+export async function isFollowing(userId: string) {
+  const { userId: currentUserId } = await auth()
+  if (!currentUserId) return false;
+  try {
+    const follow = await prisma.follows.findUnique({
+      where: {
+        followerId_followingId: {
+          followerId: currentUserId,
+          followingId: userId
+        }
+      }
+    })
+
+    return !!follow
+
+  } catch (error) {
+    console.log("Error checking follow status ", error)
+    throw new Error(error)
+  } 
 }
