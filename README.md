@@ -1,36 +1,122 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+# 🚀 Socially - Next.js Social Media App     (FOR ONLY SELF LEARNING)
 
-First, run the development server:
+A modern social media web application built with Next.js 14, TypeScript, Prisma, Clerk, UploadThing, and Tailwind CSS. Inspired by Twitter/X, this project demonstrates full-stack features including authentication, posting, image upload, notifications, and more.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 📋 Table of Contents
+
+* [Technologies Used](#technologies-used)
+* [Key Features](#key-features)
+* [Project Structure](#project-structure)
+* [System Requirements](#system-requirements)
+* [Installation & Getting Started](#installation--getting-started)
+* [Screenshots](#screenshots)
+* [Contributing](#contributing)
+* [License](#license)
+
+## 🛠️ Technologies Used
+
+* **Next.js 14** - React framework for production
+* **TypeScript** - Type safety for JavaScript
+* **Prisma ORM** - Database toolkit
+* **PostgreSQL** - Database (can use SQLite for dev)
+* **Clerk** - Authentication & user management
+* **UploadThing** - File/image upload
+* **React Hot Toast** - Notifications
+* **Tailwind CSS** - Utility-first CSS framework
+* **Lucide React** - Icon library
+* **Date-fns** - Date formatting
+* **ESLint & Prettier** - Code quality & formatting
+
+## ✨ Key Features
+
+* 🔐 User authentication (sign up, sign in, sign out)
+* 📝 Create, edit, and delete posts
+* 📷 Upload and preview images in posts
+* ❤️ Like and comment on posts
+* 🛎️ Real-time notifications
+* 👤 User profile pages
+* 🌙 Light/Dark mode toggle
+* 🏷️ Responsive, modern UI
+
+## 📁 Project Structure
+
+```
+src/
+├── actions/           # Server actions (post, user, notification, etc.)
+├── app/               # Next.js app directory
+│   ├── api/           # API routes (UploadThing, etc.)
+│   ├── fonts/         # Custom fonts
+│   ├── notifications/ # Notifications page
+│   ├── profile/       # User profile pages
+│   └── ...            # Other app routes
+├── components/        # React components (UI, PostCard, Navbar, etc.)
+├── generated/         # Generated Prisma client
+├── lib/               # Utility libraries (prisma, uploadthing, etc.)
+└── middleware.ts      # Next.js middleware
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 💻 System Requirements
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+* **Node.js**: >= 18.x
+* **npm** or **yarn**: Latest version
+* **PostgreSQL** or **SQLite**: For database
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🚀 Installation & Getting Started
 
-## Learn More
+### 1. Clone the repository
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+git clone https://github.com/DangDuyy/Socially.git
+cd Socially/my-app
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 2. Install dependencies
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+yarn install
+# or
+npm install
+```
 
-## Deploy on Vercel
+### 3. Setup Environment Variables
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Create a `.env` file in the root with the following:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```env
+DATABASE_URL=postgresql://USER:PASSWORD@localhost:5432/socially
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your-clerk-publishable-key
+CLERK_SECRET_KEY=your-clerk-secret-key
+UPLOADTHING_SECRET=your-uploadthing-secret
+UPLOADTHING_APP_ID=your-uploadthing-app-id
+```
+
+### 4. Run Database Migrations
+
+```bash
+yarn prisma migrate dev
+```
+
+### 5. Start the Development Server
+
+```bash
+yarn dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) to view the app.
+
+## 🖼️ Screenshots
+
+![alt text](image.png)     ![alt text](image-1.png)     ![alt text](image-2.png)
+
+## 🤝 Contributing
+
+1. Fork this repository
+2. Create a feature branch (`git checkout -b feature/your-feature`)
+3. Commit your changes (`git commit -m 'Add your feature'`)
+4. Push to the branch (`git push origin feature/your-feature`)
+5. Open a Pull Request
+
+## 📝 License
+
+This project is licensed under the MIT License.
